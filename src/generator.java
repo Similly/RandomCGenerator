@@ -1,21 +1,36 @@
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class generator {
 
-    static Random r = new Random();
-    static String characterAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-    static String digitAlphabet = "1234567890";
+    private static Random r = new Random();
 
-    public static void main(String args[]){
-        System.out.println(prog());
+    public static void main(String[] args){
+
+        String code = prog();
+        System.out.println(code);
+
+        try {
+            File file = new File("generatedFile.cpp");
+            FileOutputStream fos = new FileOutputStream(file);
+
+            byte[] codeInBytes = code.getBytes();
+
+            fos.write(codeInBytes);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    static String prog(){
-        String program = "int main() { \n" + stat_list() + "return 0; }";
-        return program;
+    private static String prog(){
+        return "int main() { \n" + stat_list() + "return 0; }";
     }
 
-    static String stat_list(){
+    private static String stat_list(){
         int nextStep = r.nextInt(2);
 
         String statList = "";
@@ -28,7 +43,7 @@ public class generator {
         return statList;
     }
 
-    static String stat(){
+    private static String stat(){
         int nextStep = r.nextInt(100);
         String statement = "";
 
@@ -46,39 +61,39 @@ public class generator {
         return statement;
     }
 
-    static String cmpd_stat(){
+    private static String cmpd_stat(){
         return "{ \n" + stat_list() + " }";
     }
 
-    static String if_stat(){
+    private static String if_stat(){
         int nextStep = r.nextInt(6);
         String ifstat = "";
 
         switch(nextStep){
             case 0:
-                ifstat = "if ( " + exp() + " )" + stat();
+                ifstat = "if ( " + exp() + " )\n" + stat();
                 break;
             case 1:
                 ifstat = "if ( " + exp() + " )" + cmpd_stat();
                 break;
             case 2:
-                ifstat = "if ( " + exp() + " )" + stat() + " else " + stat();
+                ifstat = "if ( " + exp() + " )\n" + stat() + "else " + stat();
                 break;
             case 3:
-                ifstat = "if ( " + exp() + " )" + cmpd_stat() + " else " + stat();
+                ifstat = "if ( " + exp() + " )" + cmpd_stat() + "else " + stat();
                 break;
             case 4:
-                ifstat = "if ( " + exp() + " )" + stat() + " else " + cmpd_stat();
+                ifstat = "if ( " + exp() + " )\n" + stat() + "else " + cmpd_stat();
                 break;
             case 5:
-                ifstat = "if ( " + exp() + " )" + cmpd_stat() + " else " + cmpd_stat();
+                ifstat = "if ( " + exp() + " )" + cmpd_stat() + "else " + cmpd_stat();
                 break;
         }
 
         return ifstat;
     }
 
-    static String iter_stat(){
+    private static String iter_stat(){
         int nextStep = r.nextInt(2);
         String iterstat = "";
 
@@ -94,11 +109,11 @@ public class generator {
         return iterstat;
     }
 
-    static String assign_stat(){
+    private static String assign_stat(){
         return id() + " = " + exp() + ";";
     }
 
-    static String exp() {
+    private static String exp() {
         int nextStep = r.nextInt(3);
         String exp = "";
 
@@ -121,7 +136,7 @@ public class generator {
         return digit() + digit_sequence();
     }
 
-    static String op() {
+    private static String op() {
         int nextStep = r.nextInt(4);
         String op = "";
 
@@ -143,7 +158,7 @@ public class generator {
         return op;
     }
 
-    static String decl_stat(){
+    private static String decl_stat(){
         int nextStep = r.nextInt(2);
         String declstat = "";
 
@@ -159,11 +174,11 @@ public class generator {
         return declstat;
     }
 
-    static String id() {
+    private static String id() {
         return character() + chardigit_sequence();
     }
 
-    static String type() {
+    private static String type() {
         int nextStep = r.nextInt(2);
         String type = "";
 
@@ -179,7 +194,7 @@ public class generator {
         return type;
     }
 
-    static String chardigit_sequence() {
+    private static String chardigit_sequence() {
         int nextStep = r.nextInt(3);
         String chardigitsequence = "";
 
@@ -198,7 +213,7 @@ public class generator {
         return chardigitsequence;
     }
 
-    static String digit_sequence(){
+    private static String digit_sequence(){
         int nextStep = r.nextInt(2);
         String digitsequence = "";
 
@@ -214,17 +229,17 @@ public class generator {
         return digitsequence;
     }
 
-    static String character(){
+    private static String character(){
+        String characterAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
         int nextStep = r.nextInt(characterAlphabet.length());
-        String character = Character.toString(characterAlphabet.charAt(nextStep));
 
-        return character;
+        return Character.toString(characterAlphabet.charAt(nextStep));
     }
 
-    static String digit(){
+    private static String digit(){
+        String digitAlphabet = "1234567890";
         int nextStep = r.nextInt(digitAlphabet.length());
-        String digit = Character.toString(digitAlphabet.charAt(nextStep));
 
-        return digit;
+        return Character.toString(digitAlphabet.charAt(nextStep));
     }
 }
