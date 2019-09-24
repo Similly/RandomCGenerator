@@ -3,7 +3,7 @@ import java.util.Random;
 public class generator {
 
     static Random r = new Random();
-    static String characterAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+    static String characterAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
     static String digitAlphabet = "1234567890";
 
     public static void main(String args[]){
@@ -11,14 +11,16 @@ public class generator {
     }
 
     static String prog(){
-        String program = "int main() { \n" + stat_list() + "\nreturn 0; }";
+        String program = "int main() { \n" + stat_list() + "return 0; }";
         return program;
     }
 
     static String stat_list(){
         int nextStep = r.nextInt(2);
 
-        String statList = stat();
+        String statList = "";
+
+        statList = statList + stat();
 
         if (nextStep == 1){
             statList = statList + stat_list();
@@ -27,30 +29,25 @@ public class generator {
     }
 
     static String stat(){
-        int nextStep = r.nextInt(5);
+        int nextStep = r.nextInt(100);
         String statement = "";
-        switch (nextStep){
-            case 0:
-                statement = cmpd_stat() + "\n";
-                break;
-            case 1:
-                statement = if_stat() + "\n";
-                break;
-            case 2:
-                statement = iter_stat() + "\n";
-                break;
-            case 3:
-                statement = assign_stat() + "\n";
-                break;
-            case 4:
-                statement = decl_stat() + "\n";
-                break;
+
+        if(nextStep >= 0 && nextStep <= 9){
+            statement = cmpd_stat() + "\n";
+        } else if(nextStep >= 10 && nextStep <= 24){
+            statement = if_stat() + "\n";
+        } else if(nextStep >= 25 && nextStep <= 39){
+            statement = iter_stat() + "\n";
+        } else if(nextStep >= 40 && nextStep <= 69){
+            statement = assign_stat() + "\n";
+        } else if(nextStep >= 70 && nextStep <= 99){
+            statement = decl_stat() + "\n";
         }
         return statement;
     }
 
     static String cmpd_stat(){
-        return "{ " + stat_list() + " }";
+        return "{ \n" + stat_list() + " }";
     }
 
     static String if_stat(){
