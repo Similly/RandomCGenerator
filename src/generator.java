@@ -10,7 +10,7 @@ public class generator {
     public static void main(String[] args){
 
         String code = prog();
-        System.out.println(code);
+        //System.out.println(code);
 
         try {
             File file = new File("generatedFile.cpp");
@@ -62,7 +62,7 @@ public class generator {
     }
 
     private static String cmpd_stat(){
-        return "{ \n" + stat_list() + " }";
+        return "{ \n" + stat_list() + "}";
     }
 
     private static String if_stat(){
@@ -99,7 +99,7 @@ public class generator {
 
         switch(nextStep){
             case 0:
-                iterstat = "while ( " + exp() + " ) " + stat();
+                iterstat = "while ( " + exp() + " ) \n" + stat();
                 break;
             case 1:
                 iterstat = "while ( " + exp() + " ) " + cmpd_stat();
