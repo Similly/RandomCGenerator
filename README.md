@@ -2,7 +2,8 @@
 
 Link to online Java Compiler: https://onlinegdb.com/H12vYotvr
 
-<script src="//onlinegdb.com/embed/js/H12vYotvr?theme=dark"></script>
+<script src="//onlinegdb.com/embed/js/H12vYotvr?theme=dark">
+</script>
 
 ## Errors and problems with the generator
 
